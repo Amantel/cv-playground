@@ -248,7 +248,7 @@ const Terminal: React.FC<TerminalProps> = ({ setToast, sessionId }) => {
       const href = html.querySelector('a')?.getAttribute('href')
       return (
 
-        <pre key={`${text}${timestamp}`} className={className} data-prefix={''}><code>
+        <span key={`${text}${timestamp}`} className={className} data-prefix={''}><code>
           You can
           it by clicking this link: <a
             className={'link'}
@@ -257,11 +257,13 @@ const Terminal: React.FC<TerminalProps> = ({ setToast, sessionId }) => {
             rel="noopener noreferrer">
             download
           </a>
-        </code></pre>
+        </code></span>
       )
     }
 
-    return <pre key={`${text}${timestamp}`} className={className} data-prefix={prefix}><code>{text}</code></pre>
+    return <pre key={`${text}${timestamp}`} className={className} data-prefix={prefix}>
+      <code className='whitespace-break-spaces'>{text}</code>
+    </pre>
   })
 
   return (
