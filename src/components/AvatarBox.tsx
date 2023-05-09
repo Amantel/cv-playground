@@ -1,20 +1,15 @@
 import Image from 'next/image'
 import React from 'react'
 
-type sessionAvatar = {
-  url: string
-}
-
 type AvatarBoxProps = {
-  sessionAvatars: sessionAvatar[]
+  avatarUrl: string | null
   loading: boolean
 };
 
-const AvatarBox: React.FC<AvatarBoxProps> = ({ sessionAvatars, loading }) => {
-  if (!sessionAvatars || !sessionAvatars.length) return null
-  const sessionAvatar = sessionAvatars[sessionAvatars.length - 1]
+const AvatarBox: React.FC<AvatarBoxProps> = ({ avatarUrl, loading }) => {
+  if (!avatarUrl) return null
 
-  const url = loading ? '/img/loader.gif' : sessionAvatar?.url || '/img/loader.gif'
+  const url = loading ? '/img/loader.gif' : avatarUrl || '/img/loader.gif'
 
   return <div className='absolute -top-10 -right-5'>
     <Image
@@ -22,7 +17,8 @@ const AvatarBox: React.FC<AvatarBoxProps> = ({ sessionAvatars, loading }) => {
       width="256"
       height="256"
       className="mask mask-hexagon-2 w-24"
-      src={url} />
+      src={url}
+    />
   </div>
 }
 

@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { api } from '~/utils/api'
 import AvatarBox from './AvatarBox'
 
-const MAX_LINES = 12
+const MAX_LINES = 15
 
 type Command = {
   text: string;
@@ -41,13 +41,12 @@ const Terminal: React.FC<TerminalProps> = ({ setToast, sessionId }) => {
   const { data: sessionAvatars, refetch: refetchAvatar } = api.avatar.getAvatar.useQuery({ sessionId }, {
     enabled: !!sessionId,
   })
+  const avatarUrl = sessionAvatars?.[sessionAvatars.length - 1]?.url || null
 
   const { mutate: generateAvatar, isLoading } = api.avatar.generate.useMutation({
-
     onSuccess () {
       return refetchAvatar()
     },
-
   })
 
   useEffect(() => {
@@ -85,14 +84,13 @@ const Terminal: React.FC<TerminalProps> = ({ setToast, sessionId }) => {
   const getCV = () => {
     const info = [
       'My CV',
-      'you can download it from',
-      'http://mycv.com',
+      'you can download it from <a href="/cv.pdf" target="blank">here</a>',
     ].map((text, i) => {
       return {
         text,
         timestamp: new Date().getTime(),
         isCommand: false,
-        prefix: !i ? '>' : '',
+        prefix: !i ? '>' : '!',
         color: Color.Yellow,
       }
     })
@@ -159,6 +157,10 @@ const Terminal: React.FC<TerminalProps> = ({ setToast, sessionId }) => {
       'TRPC',
       'PRISMA',
       'DAISY',
+      'DALL-E 2',
+      'REACT',
+      'ChatGPT',
+      'Sweat and tears',
     ].map((text, i) => {
       return {
         text,
@@ -239,12 +241,32 @@ const Terminal: React.FC<TerminalProps> = ({ setToast, sessionId }) => {
         className = 'text-success'
         break
     }
+
+    if (item.prefix === '!') {
+      const parser = new DOMParser()
+      const html = parser.parseFromString(item.text, 'text/html')
+      const href = html.querySelector('a')?.getAttribute('href')
+      return (
+
+        <pre key={`${text}${timestamp}`} className={className} data-prefix={''}><code>
+          You can
+          it by clicking this link: <a
+            className={'link'}
+            href={href || ''}
+            target="_blank"
+            rel="noopener noreferrer">
+            download
+          </a>
+        </code></pre>
+      )
+    }
+
     return <pre key={`${text}${timestamp}`} className={className} data-prefix={prefix}><code>{text}</code></pre>
   })
 
   return (
     <div className="relative mockup-code mx-auto overflow-visible w-full max-w-screen-xl">
-      <AvatarBox sessionAvatars={sessionAvatars} loading={isLoading} />
+      <AvatarBox avatarUrl={avatarUrl} loading={isLoading} />
       {terminalItems}
       <pre data-prefix="$"><code>
         <form className='inline ml-[-16px]' onSubmit={handleInputSubmit}>
