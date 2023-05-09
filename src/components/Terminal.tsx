@@ -281,7 +281,7 @@ const Terminal: React.FC<TerminalProps> = ({ setToast, sessionId }) => {
             onChange={handleInputChange}
             autoComplete="off"
             className="
-              input input-ghost w-full max-w-xs
+              input input-ghost w-full
               bg-transparent border-none focus:outline-none
               text-white focus:text-white
             "
