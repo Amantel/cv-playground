@@ -32,6 +32,7 @@ const UI: React.FC = () => {
   const soakMode = wrongInputNumber > 5
   return <>
     <Terminal setToast={setToast} sessionId={sessionId}/>
+    <h4 className='kbd'>Start with typing  *<b>help</b>*</h4>
     <ToasterInfo toast={toast} soakMode={soakMode}/>
   </>
 }

@@ -248,8 +248,8 @@ const Terminal: React.FC<TerminalProps> = ({ setToast, sessionId }) => {
       const href = html.querySelector('a')?.getAttribute('href')
       return (
 
-        <span key={`${text}${timestamp}`} className={className} data-prefix={''}><code>
-          You can
+        <span key={`${text}${timestamp}`} className={className + ' block mx-5'} data-prefix={''}><code>
+          You can download it
           it by clicking this link: <a
             className={'link'}
             href={href || ''}
@@ -267,10 +267,11 @@ const Terminal: React.FC<TerminalProps> = ({ setToast, sessionId }) => {
   })
 
   return (
-    <div className="relative mockup-code mx-auto overflow-visible w-full max-w-screen-xl">
+    <div className="relative mockup-code mx-auto   overflow-visible w-full max-w-screen-xl">
       <AvatarBox avatarUrl={avatarUrl} loading={isLoading} />
       {terminalItems}
       <pre data-prefix="$"><code>
+
         <form className='inline ml-[-16px]' onSubmit={handleInputSubmit}>
           <input
             ref={inputRef}
@@ -292,6 +293,7 @@ const Terminal: React.FC<TerminalProps> = ({ setToast, sessionId }) => {
         </form>
       </code>
       </pre>
+
     </div>
   )
 }
